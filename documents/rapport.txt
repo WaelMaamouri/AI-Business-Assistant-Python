@@ -1,0 +1,7 @@
+Client : Entreprise ABC
+Ville : Avignon
+Intervention : Recherche une fuite
+Priorité : urgente
+Durée : 90 minutes
+Problème : fuite détectée sur une canalisation
+Action : réparation effectuée

@@ -1,0 +1,26 @@
+services:
+  api:
+    build: .
+    container_name: ai-business-assistant-api
+    ports:
+      - "8000:8000"
+    environment:
+      OLLAMA_HOST: ${OLLAMA_HOST}
+      DATABASE_URL: postgresql://assistant:assistant@postgres:5432/assistant_db
+    volumes:
+      - ${PWD}/data:/app/data
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:17
+    container_name: ai-business-assistant-db
+    environment:
+      POSTGRES_USER: assistant
+      POSTGRES_PASSWORD: assistant
+      POSTGRES_DB: assistant_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
