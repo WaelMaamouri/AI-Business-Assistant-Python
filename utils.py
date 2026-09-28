@@ -1,6 +1,6 @@
 import json
 from fastapi import HTTPException
-from models import RapportIAResponse, RapportResponse
+from models import RapportIAResponse
 from pydantic import ValidationError
 import logging
 

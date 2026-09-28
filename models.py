@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import Literal, Optional
+from typing import Literal,
 
 class RapportRequest(BaseModel):
     rapport: str = Field(min_length=1, max_length=5000)
@@ -18,7 +18,7 @@ class RapportIAResponse(BaseModel):
     client: str
     ville: str
     type: str
-    priorite: Optional[Literal["normale", "élevée", "urgente"]] = None
+    priorite: Literal["normale", "élevée", "urgente"]
     duree: int = Field(ge=0)
     probleme: str
     action: str
@@ -27,7 +27,7 @@ class RapportResponse(BaseModel):
     client: str
     ville: str
     type: str
-    priorite: Optional[Literal["normale", "élevée", "urgente"]] = None
+    priorite: Literal["normale", "élevée", "urgente"]
     duree: int = Field(ge=0)
     probleme: str
     action: str    
