@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field, field_validator
-from typing import Literal,
+from typing import Literal
 
 class RapportRequest(BaseModel):
     rapport: str = Field(min_length=1, max_length=5000)
