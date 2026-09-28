@@ -8,7 +8,6 @@ def enregistrer_intervention(intervention):
             cur.execute(
                 """
                 INSERT INTO interventions (
-                    id,
                     client,
                     ville,
                     type,
@@ -17,11 +16,11 @@ def enregistrer_intervention(intervention):
                     probleme,
                     action)
                     VALUES (
-                        %s, %s, %s, %s, %s, %s, %s, %s
+                        %s, %s, %s, %s, %s, %s, %s
                     )
+                    RETURNING id
                     """,
                     (
-                        intervention["id"],
                         intervention["client"],
                         intervention["ville"],
                         intervention["type"],
@@ -33,7 +32,10 @@ def enregistrer_intervention(intervention):
                 
             )
             
+            id = cur.fetchone()[0]
+            
         conn.commit()
+        return id
         
     finally:
         conn.close()
@@ -117,21 +119,5 @@ def trouver_intervention(id):
                 "action": row[7],
                 }
             
-    finally:
-        conn.close()
-        
-def generate_id():
-    conn = get_connection()
-    
-    try:
-        with conn.cursor() as cur:
-            cur.execute(
-                """
-                SELECT COALESCE(MAX(id), 0) + 1
-                FROM interventions
-                """
-            )
-            
-            return cur.fetchone()[0]
     finally:
         conn.close()

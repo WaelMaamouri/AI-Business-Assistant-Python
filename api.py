@@ -4,8 +4,8 @@ from ai_service import analyse_avec_ollama
 from repository import (
     enregistrer_intervention, 
     lister_interventions, 
-    trouver_intervention,
-    generate_id)
+    trouver_intervention
+    )
 from utils import (
     convertir_en_json,
     valider_donnees_ia)
@@ -83,13 +83,14 @@ Rapport :
     
     donnees = convertir_en_json(contenu_ia)
     
-    id = generate_id()
-            
-    donnees["id"] = id
-
-    rapport = valider_donnees_ia(donnees)
+    rapport_ia = valider_donnees_ia(donnees)
     
-    enregistrer_intervention(rapport.model_dump())
+    id =enregistrer_intervention(rapport_ia.model_dump())
+    
+    rapport = RapportResponse(
+        id=id,
+        **rapport_ia.model_dump()
+    )
     
     logger.info(f"Analyse terminée - intervention ID : {id}")
     

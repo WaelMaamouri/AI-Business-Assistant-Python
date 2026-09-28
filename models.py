@@ -13,7 +13,15 @@ class RapportRequest(BaseModel):
             raise ValueError("Le rapport ne peux pas être vide")
         
         return valeur
-             
+
+class RapportIAResponse(BaseModel):
+    client: str
+    ville: str
+    type: str
+    priorite: Optional[Literal["normale", "élevée", "urgente"]] = None
+    duree: int = Field(ge=0)
+    probleme: str
+    action: str
 class RapportResponse(BaseModel):
     id: int
     client: str
