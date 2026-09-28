@@ -20,7 +20,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5173"],
+    allow_origins=["http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -94,7 +94,7 @@ Rapport :
     
     rapport_ia = valider_donnees_ia(donnees)
     
-    id =enregistrer_intervention(rapport_ia.model_dump())
+    id = enregistrer_intervention(rapport_ia.model_dump())
     
     rapport = RapportResponse(
         id=id,
@@ -118,9 +118,6 @@ def historique():
     responses={
         404: {
             "description" : "Intervention introuvable"
-        },
-        500: {
-            "description" : "Le fichier historique contient un JSON invalide"
         }
     }
     )
