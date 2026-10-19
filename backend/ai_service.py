@@ -1,26 +1,42 @@
+import os
+
 import ollama
-import logging
 
-logging.basicConfig(level=logging.INFO)
+from models import RapportIAResponse
 
-logger = logging.getLogger(__name__)
+MODELE = os.getenv("OLLAMA_MODEL", "qwen3.5:4b")
+HOTE = os.getenv("OLLAMA_HOST", "http://localhost:11434")
 
-def analyse_avec_ollama(prompt):
-    
-    try: 
-        logger.info("Envoi du rapport à Ollama")
-        response = ollama.chat(
-            model="qwen3.5:4b",
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt    
-                }         
-            ]
-        )
-        logger.info("Réponse reçue d'Ollama")
-    except Exception as erreur:
-        logger.error(f"Erreur Ollama : {erreur}")
-        raise
+client = ollama.Client(host=HOTE, timeout=120)
 
-    return response["message"]["content"]
+SYSTEME = """Tu extrais une fiche d'intervention
+depuis un rapport technique en français.
+Réponds uniquement en JSON.
+
+Règles :
+- client : nom exact cité dans le rapport.
+- ville : ville citée, sinon "Inconnue".
+- type : nature de l'intervention
+  (ex : maintenance, dépannage, installation).
+- priorite : "normale", "élevée" ou "urgente".
+  Urgente si fuite, panne totale ou danger.
+- duree : durée en minutes, nombre entier.
+  Convertis les heures en minutes.
+- probleme : le problème constaté, en une phrase.
+- action : l'action réalisée, en une phrase.
+- N'invente jamais une information absente
+  du rapport."""
+
+
+def analyse_avec_ollama(prompt: str) -> str:
+    reponse = client.chat(
+        model=MODELE,
+        messages=[
+            {"role": "system", "content": SYSTEME},
+            {"role": "user", "content": prompt},
+        ],
+        format=RapportIAResponse.model_json_schema(),
+        think=False,
+        options={"temperature": 0},
+    )
+    return reponse["message"]["content"]
