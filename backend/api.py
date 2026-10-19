@@ -9,7 +9,9 @@ from repository import (
     )
 from utils import (
     convertir_en_json,
-    valider_donnees_ia)
+    valider_donnees_ia,
+    corriger_ville,
+    verifier_expoloitable)
 from models import (
     RapportRequest,
     RapportResponse
@@ -93,6 +95,10 @@ Rapport :
     donnees = convertir_en_json(contenu_ia)
     
     rapport_ia = valider_donnees_ia(donnees)
+    
+    rapport_ia = corriger_ville(rapport_ia, contenu)
+    
+    verifier_expoloitable(rapport_ia)
     
     id = enregistrer_intervention(rapport_ia.model_dump())
     

@@ -11,11 +11,22 @@ client = ollama.Client(host=HOTE, timeout=120)
 
 SYSTEME = """Tu extrais une fiche d'intervention
 depuis un rapport technique en français.
+Exemple : 
+"Passage à la mairie de Cavaillon,
+fuite réparée en 1h30."
+donne client "mairie de Cavaillon",
+ville "Cavaillon, duree 90.
 Réponds uniquement en JSON.
 
 Règles :
-- client : nom exact cité dans le rapport.
-- ville : ville citée, sinon "Inconnue".
+- client : nom complet de l'organisme
+  ou du lieu, avec son type
+  Ex: "mairie de Cavaillon",
+  "médiathèque d'Orange".
+- ville : comme de l'intervention.
+  Elle peut faire partie du nom du 
+  client : extrais-la quand même.
+  Sinon "Inconnue".
 - type : nature de l'intervention
   (ex : maintenance, dépannage, installation).
 - priorite : "normale", "élevée" ou "urgente".
@@ -25,7 +36,11 @@ Règles :
 - probleme : le problème constaté, en une phrase.
 - action : l'action réalisée, en une phrase.
 - N'invente jamais une information absente
-  du rapport."""
+  du rapport.
+- Si le texte n'est pas un rapport 
+  d'intervention : client "Inconnu", 
+  ville "Inconnue", type "Inconnue",
+  duree 0."""
 
 
 def analyse_avec_ollama(prompt: str) -> str:
