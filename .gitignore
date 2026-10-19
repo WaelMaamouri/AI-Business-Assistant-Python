@@ -1,10 +1,11 @@
-
-
-#Ignore vscode AI rules
-.github\instructions\codacy.instructions.md
-
-# Local environment and generated files
+# Environnement local
 .env
 .venv/
 __pycache__/
 *.py[cod]
+*.log
+node_modules/
+
+# Fichiers générés par les extensions VS Code
+.codacy/
+.github/

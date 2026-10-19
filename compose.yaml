@@ -8,7 +8,7 @@ services:
       OLLAMA_HOST: ${OLLAMA_HOST}
       DATABASE_URL: postgresql://assistant:assistant@postgres:5432/assistant_db
     volumes:
-      - ${PWD}/data:/app/data
+      - ./data:/app/data
     depends_on:
       - postgres
 
@@ -21,6 +21,7 @@ services:
       POSTGRES_DB: assistant_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 volumes:
   postgres_data:
